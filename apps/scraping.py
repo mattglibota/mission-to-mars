@@ -6,7 +6,9 @@ import pandas as pd, datetime as dt
 
 def scrape_all():
     # Initiate headless driver for deployment
-    browser = Browser("chrome", executable_path="chromedriver", headless=True)
+    # Set the executable path and initialize the chrome browser in splinter
+    executable_path = {'executable_path': 'chromedriver'}
+    browser = Browser('chrome', **executable_path, headless=True)
 
     # run mars news
     news_title, news_paragraph = mars_news(browser)
@@ -19,13 +21,10 @@ def scrape_all():
         "facts": mars_facts(),
         "last_modified": dt.datetime.now()
     }
+    browser.quit()
+    return data
 
-
-# Set the executable path and initialize the chrome browser in splinter
-executable_path = {'executable_path': 'chromedriver'}
-browser = Browser('chrome', **executable_path)
-
-def mars_news():
+def mars_news(browser):
     # ### Mars News
 
     # Visit the mars nasa news site
@@ -96,8 +95,6 @@ def mars_facts():
     df.set_index('description', inplace=True)
 
     return df.to_html()
-
-browser.quit()
 
 if __name__ == "__main__":
     # If running as script, print scraped data

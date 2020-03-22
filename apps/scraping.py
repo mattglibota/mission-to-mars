@@ -99,7 +99,7 @@ def mars_facts():
     df.set_index('description', inplace=True)
 
     # fact_html = '<table id="tablepress-p-mars-no-2" class="tablepress tablepress-id-p-mars"><tbody><tr class="row-1 odd"><td class="column-1"><strong>Equatorial Diameter:</strong></td><td class="column-2">6,792 km<br></td></tr><tr class="row-2 even"><td class="column-1"><strong>Polar Diameter:</strong></td><td class="column-2">6,752 km<br></td></tr><tr class="row-3 odd"><td class="column-1"><strong>Mass:</strong></td><td class="column-2">6.39 × 10^23 kg<br> (0.11 Earths)</td></tr><tr class="row-4 even"><td class="column-1"><strong>Moons:</strong></td><td class="column-2">2 (<a href="https://space-facts.com/moons/phobos/">Phobos</a> &amp; <a href="https://space-facts.com/moons/deimos/">Deimos</a>)</td></tr><tr class="row-5 odd"><td class="column-1"><strong>Orbit Distance:</strong></td><td class="column-2">227,943,824 km<br> (1.38 AU)</td></tr><tr class="row-6 even"><td class="column-1"><strong>Orbit Period:</strong></td><td class="column-2">687 days (1.9 years)<br></td></tr><tr class="row-7 odd"><td class="column-1"><strong>Surface Temperature: </strong></td><td class="column-2">-87 to -5 °C</td></tr><tr class="row-8 even"><td class="column-1"><strong>First Record:</strong></td><td class="column-2">2nd millennium BC</td></tr><tr class="row-9 odd"><td class="column-1"><strong>Recorded By:</strong></td><td class="column-2">Egyptian astronomers</td></tr></tbody></table>'
-    fact_html = df.to_html()
+    fact_html = df.to_html(header=None).replace("dataframe","table table-striped")
     return fact_html
 
 def challenge_image(browser):

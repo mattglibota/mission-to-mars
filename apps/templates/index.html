@@ -42,13 +42,35 @@
       <!-- Mars Facts --> 
       <div class="col-md-4" id="mars-facts">
             <h2>Mars Facts</h2>
-            <table class="table table-striped">
-              {{ mars.facts | safe }}
-            </table>
+            {{ mars.facts | safe }}
       </div>
 
     </div>
 
+    <!-- Challenge Bootstrap: Add Mars Thumbnails -->
+    <div class="row" id="mars-image-challenge">
+      <h2>Hemisphere Thumbnails</h2>
+      <div class="col-xs-3">
+        <img class="img-thumbnail" 
+          src="{{mars.hemi_img[0].img_url}}" 
+          alt="{{mars.hemi_img[0].title}}">
+      </div>
+      <div class="col-xs-3">
+        <img class="img-thumbnail"
+          src="{{mars.hemi_img[1].img_url}}" 
+          alt="{{mars.hemi_img[1].title}}">
+      </div>
+      <div class="col-xs-3">
+        <img class="img-thumbnail"
+          src="{{mars.hemi_img[2].img_url}}" 
+          alt="{{mars.hemi_img[2].title}}">
+      </div>
+      <div class="col-xs-3">
+        <img class="img-thumbnail" 
+          src="{{mars.hemi_img[3].img_url}}" 
+          alt="{{mars.hemi_img[3].title}}">
+      </div>    
+    </div>
 
   </div>
 </body>

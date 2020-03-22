@@ -12,6 +12,9 @@ def scrape_all():
 
     # run mars news
     news_title, news_paragraph = mars_news(browser)
+
+    #run mars challenge
+    hemi_list    = challenge_image(browser)
     
     #run all scraping functions and store data
     data = {
@@ -19,7 +22,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemi_img" : hemi_list
     }
     browser.quit()
     return data
@@ -94,9 +98,42 @@ def mars_facts():
     df.columns = ['description', 'value']
     df.set_index('description', inplace=True)
 
-    return df.to_html()
+    # fact_html = '<table id="tablepress-p-mars-no-2" class="tablepress tablepress-id-p-mars"><tbody><tr class="row-1 odd"><td class="column-1"><strong>Equatorial Diameter:</strong></td><td class="column-2">6,792 km<br></td></tr><tr class="row-2 even"><td class="column-1"><strong>Polar Diameter:</strong></td><td class="column-2">6,752 km<br></td></tr><tr class="row-3 odd"><td class="column-1"><strong>Mass:</strong></td><td class="column-2">6.39 × 10^23 kg<br> (0.11 Earths)</td></tr><tr class="row-4 even"><td class="column-1"><strong>Moons:</strong></td><td class="column-2">2 (<a href="https://space-facts.com/moons/phobos/">Phobos</a> &amp; <a href="https://space-facts.com/moons/deimos/">Deimos</a>)</td></tr><tr class="row-5 odd"><td class="column-1"><strong>Orbit Distance:</strong></td><td class="column-2">227,943,824 km<br> (1.38 AU)</td></tr><tr class="row-6 even"><td class="column-1"><strong>Orbit Period:</strong></td><td class="column-2">687 days (1.9 years)<br></td></tr><tr class="row-7 odd"><td class="column-1"><strong>Surface Temperature: </strong></td><td class="column-2">-87 to -5 °C</td></tr><tr class="row-8 even"><td class="column-1"><strong>First Record:</strong></td><td class="column-2">2nd millennium BC</td></tr><tr class="row-9 odd"><td class="column-1"><strong>Recorded By:</strong></td><td class="column-2">Egyptian astronomers</td></tr></tbody></table>'
+    fact_html = df.to_html()
+    return fact_html
+
+def challenge_image(browser):
+    # Visit URL
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
+    
+    #list of hemisphere names
+    hemi_names = [
+    "Cerberus",
+    "Schiaparelli",
+    "Syrtis Major",
+    "Valles Marineris"
+    ]
+
+    hemi_list = []
+
+    for hemi in hemi_names:
+        # find hemi URL and click
+        browser.is_element_present_by_text(hemi, wait_time=1)
+        more_info_elem = browser.links.find_by_partial_text(hemi)
+        more_info_elem.click()
+        # Parse the resulting html with soup
+        html = browser.html
+        img_soup = BeautifulSoup(html, 'html.parser')
+        img_url_rel = img_soup.select_one('div.wide-image-wrapper \
+                                        div.downloads ul li a').get('href')
+        
+        hemi_list.append({"title": hemi, "img_url": img_url_rel})
+
+        browser.back()
+
+    return hemi_list
 
 if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())    
-
